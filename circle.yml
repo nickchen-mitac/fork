@@ -1,7 +1,3 @@
-machine:
-  services:
-    - docker
-
 general:
   artifacts:
     - "dist/avame-0.1.0+${CIRCLE_BUILD_NUM}.tgz"
@@ -25,12 +21,4 @@ test:
     - PYTHONPATH=".:./src" pyinstaller pack/avame-con.spec --clean -y
   post:
     - cd dist && tar zcvf avame-0.1.0+${CIRCLE_BUILD_NUM}.tgz avame/
-
-deployment:
-  hub:
-    branch: master
-    commands:
-      - docker build -t eavatar/avame:$CIRCLE_BUILD_NUM-$CIRCLE_SHA1 .
-      - docker tag eavatar/avame:$CIRCLE_BUILD_NUM-$CIRCLE_SHA1 eavatar/avame:latest
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push eavatar/avame
+	
